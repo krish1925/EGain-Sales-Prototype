@@ -1,0 +1,44 @@
+/* Navbar.css */
+
+.navbar {
+    background-color: #00bcd4; /* eGain brand color */
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+.navbar-brand {
+    font-size: 1.8rem; /* Slightly larger brand text */
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase; /* Uppercase for brand */
+    letter-spacing: 1px;
+}
+
+.navbar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-item {
+    margin-left: 2rem; /* Increased spacing */
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 0.8rem; /* Add padding for clickable area */
+    border-radius: 4px; /* Slightly rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle background on hover */
+    color: white;
+} 
