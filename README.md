@@ -27,6 +27,7 @@ An interactive heatmap that offers a geographical visualization of user activity
     - Average Time Per Session
     - Traffic for a specific page
 - **Global View**: Uses Leaflet to plot data on a world map, helping you identify regional trends.
+- **Regional Summaries Table**: Below the map, a detailed table provides country-specific insights, including total visitors, page views, average engagement, and conversion rates. It also includes the **bounce rate**, which is the percentage of visitors who leave the site after viewing only one page.
 
 ### Activity Statistics
 This page provides high-level statistical charts to give you a quick overview of site-wide activity.

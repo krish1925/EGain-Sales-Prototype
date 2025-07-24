@@ -61,13 +61,9 @@ const OtherCategories: React.FC = () => {
                     : 'http://localhost:8000/weblogs/';
                 const response = await axios.get(url);
                 setWeblogs(response.data.weblogs);
-
-                // Extract unique countries from the full dataset (not filtered by selectedCountry)
-                // This ensures "All Countries" shows all options, even if a filter is active
-                const allCountries = Array.from(new Set(response.data.weblogs.map((log: WeblogEntry) => log.country)));
+                const allCountries = Array.from(new Set(response.data.weblogs.map((log: WeblogEntry) => log.country))) as string[];
                 setAvailableCountries(allCountries.sort());
-                // Do NOT set selectedCountry here, it should be controlled by the user's dropdown choice or default to ''
-
+                
             } catch (err) {
                 setError('Failed to fetch weblogs.');
                 console.error(err);
@@ -76,17 +72,14 @@ const OtherCategories: React.FC = () => {
             }
         };
 
-        // Fetch weblogs whenever selectedCountry changes (or initially)
         fetchWeblogs();
     }, [selectedCountry]); // Add selectedCountry as a dependency
 
     useEffect(() => {
         if (weblogs.length > 0) {
-            // Data processing should now happen on the already filtered weblogs from the API
-            // No need for client-side filtering here anymore, as the API handles it
+            
             const filteredWeblogs = weblogs; // weblogs is already filtered by API based on selectedCountry
 
-            // Data for Conversion Rates by Source Chart
             const sourceConversions: { [key: string]: { converted: number; total: number } } = {};
             filteredWeblogs.forEach(log => {
                 const source = log.utm_source || 'direct';

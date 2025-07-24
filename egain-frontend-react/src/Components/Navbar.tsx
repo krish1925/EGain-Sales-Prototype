@@ -1,12 +1,12 @@
 import React from 'react';
-import './Navbar.css'; 
+import '../CSS/Navbar.css'; 
 import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
     return (
         <nav className="navbar">
             <div className="navbar-brand">
-                EGainWeblog Analytics
+                EGain Weblog Analytics
             </div>
             <ul className="navbar-nav">
                 <li className="nav-item">

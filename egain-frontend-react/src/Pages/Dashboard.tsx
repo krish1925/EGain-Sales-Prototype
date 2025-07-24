@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Papa from 'papaparse';
-import { Line, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement);
-
-// Removed: import PageViewsByCountryChart from '../Components/PageViewsByCountryChart';
-// Removed: import EngagementScoreByDeviceChart from '../Components/EngagementScoreByDeviceChart';
-// Removed: import ConversionRatesBySourceChart from '../Components/ConversionRatesBySourceChart';
 
 interface WeblogEntry {
     timestamp: string;
@@ -75,10 +69,6 @@ const Dashboard: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Removed: const [pageViewsByCountry, setPageViewsByCountry] = useState<AggregatedData>({});
-    // Removed: const [engagementScoreByDevice, setEngagementScoreByDevice] = useState<AggregatedData>({});
-    // Removed: const [conversionRatesBySource, setConversionRatesBySource] = useState<AggregatedData>({});
-
     // State for Visitor Insights filters and data
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [deviceFilter, setDeviceFilter] = useState<string>('All');
@@ -118,37 +108,10 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => {
         if (weblogs.length > 0) {
-            // Removed: Aggregate data for Charts
-            // Removed: const countryViews: AggregatedData = {};
-            // Removed: const deviceEngagement: AggregatedData = {};
-            // Removed: const sourceConversions: { [key: string]: { converted: number; total: number } } = {};
-
             weblogs.forEach(log => {
-                // Removed: countryViews[log.country] = (countryViews[log.country] || 0) + 1;
-                // Removed: deviceEngagement[log.device_type] = (deviceEngagement[log.device_type] || 0) + log.engagement_score;
-                // Removed: const source = log.utm_source || 'direct';
-                // Removed: if (!sourceConversions[source]) {
-                // Removed:     sourceConversions[source] = { converted: 0, total: 0 };
-                // Removed: }
-                // Removed: sourceConversions[source].total += 1;
-                // Removed: if (log.is_converted) {
-                // Removed:     sourceConversions[source].converted += 1;
-                // Removed: }
             });
 
-            // Removed: setPageViewsByCountry(countryViews);
-            // Removed: setEngagementScoreByDevice(deviceEngagement);
-
-            // Removed: const conversionRates: AggregatedData = {};
-            // Removed: for (const source in sourceConversions) {
-            // Removed:     if (sourceConversions[source].total > 0) {
-            // Removed:         conversionRates[source] = (sourceConversions[source].converted / sourceConversions[source].total) * 100;
-            // Removed:     } else {
-            // Removed:         conversionRates[source] = 0;
-            // Removed:     }
-            // Removed: }
-            // Removed: setConversionRatesBySource(conversionRates);
-
+            
             // Consolidate and filter data for Visitor Insights
             const groupedByVisitor = weblogs.reduce((acc, log) => {
                 if (!acc[log.visitor_id]) {
@@ -361,13 +324,13 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="dashboard-container">
-            <header className="dashboard-header">
+            {/* <header className="dashboard-header">
                 <h1>Egain Weblog Analytics Dashboard</h1>
-            </header>
+            </header> */}
             {/* Removed charts section */}
 
             <section className="visitor-insights-section">
-                <h2>Visitor Insights</h2>
+                <h2>Dashboard: Visitor Insights</h2>
                 <div className="filters-container">
                     <input
                         type="text"

@@ -35,6 +35,19 @@ interface WeblogEntry {
     engagement_score: number;
 }
 
+interface RegionalSummary {
+    country: string;
+    totalVisitors: number;
+    totalPageViews: number;
+    avgEngagement: string;
+    avgTimeOnPage: string;
+    conversionRate: string;
+    mostCommonDevice: string;
+    mostCommonOS: string;
+    bounceRate: string;
+    topReferrer: string;
+}
+
 const getCoordinates = (city: string, country: string): [number, number, number] => {
     const coordinates: { [key: string]: [number, number, number] } = {
         'San Francisco, United States': [37.7749, -122.4194, 1],
@@ -90,6 +103,7 @@ const RegionalReports: React.FC = () => {
     const [selectedMetric, setSelectedMetric] = useState<'engagement' | 'time' | 'traffic'>('engagement');
     const [selectedPage, setSelectedPage] = useState<string>('');
     const [availablePages, setAvailablePages] = useState<string[]>([]);
+    const [summaries, setSummaries] = useState<RegionalSummary[]>([]);
 
     useEffect(() => {
         const fetchWeblogs = async () => {
@@ -100,6 +114,50 @@ const RegionalReports: React.FC = () => {
 
                 const uniquePages = Array.from(new Set(weblogs.map(log => log.page_visited))).sort();
                 setAvailablePages(uniquePages);
+
+                // Calculate regional summaries
+                const regionalData: { [country: string]: WeblogEntry[] } = {};
+                weblogs.forEach(log => {
+                    if (!regionalData[log.country]) {
+                        regionalData[log.country] = [];
+                    }
+                    regionalData[log.country].push(log);
+                });
+
+                const calculatedSummaries: RegionalSummary[] = Object.keys(regionalData).map(country => {
+                    const logs = regionalData[country];
+                    const totalVisitors = new Set(logs.map(log => log.visitor_id)).size;
+                    const totalPageViews = logs.length;
+                    const totalEngagement = logs.reduce((acc, log) => acc + log.engagement_score, 0);
+                    const avgEngagement = (totalEngagement / totalPageViews).toFixed(2);
+                    const totalTimeOnPage = logs.reduce((acc, log) => acc + log.time_on_page_seconds, 0);
+                    const avgTimeOnPage = (totalTimeOnPage / totalPageViews).toFixed(2);
+                    const totalConversions = logs.filter(log => log.is_converted).length;
+                    const conversionRate = ((totalConversions / totalPageViews) * 100).toFixed(2);
+                    const deviceTypes = logs.map(log => log.device_type);
+                    const mostCommonDevice = deviceTypes.sort((a,b) => deviceTypes.filter(v => v===a).length - deviceTypes.filter(v => v===b).length).pop() || 'N/A';
+                    const osTypes = logs.map(log => log.operating_system);
+                    const mostCommonOS = osTypes.sort((a,b) => osTypes.filter(v => v===a).length - osTypes.filter(v => v===b).length).pop() || 'N/A';
+                    const bounces = logs.filter(log => log.is_bounce).length;
+                    const bounceRate = ((bounces / totalPageViews) * 100).toFixed(2);
+                    const referrers = logs.map(log => log.referrer).filter(r => r && r !== 'direct');
+                    const topReferrer = referrers.sort((a,b) => referrers.filter(v => v===a).length - referrers.filter(v => v===b).length).pop() || 'Direct';
+
+                    return {
+                        country,
+                        totalVisitors,
+                        totalPageViews,
+                        avgEngagement,
+                        avgTimeOnPage,
+                        conversionRate: `${conversionRate}%`,
+                        mostCommonDevice,
+                        mostCommonOS,
+                        bounceRate: `${bounceRate}%`,
+                        topReferrer,
+                    };
+                });
+                setSummaries(calculatedSummaries);
+
 
                 if (selectedMetric === 'traffic' && !selectedPage && uniquePages.length > 0) {
                     setSelectedPage(uniquePages[0]);
@@ -218,15 +276,59 @@ const RegionalReports: React.FC = () => {
                 )}
             </div>
             <div className="heatmap-container-wrapper">
-                <MapContainer center={center} zoom={defaultZoom} className="heatmap-map-container" scrollWheelZoom={true}>
+                <MapContainer 
+                    center={center} 
+                    zoom={defaultZoom} 
+                    className="heatmap-map-container" 
+                    scrollWheelZoom={true}
+                    {...({} as any)} // Type assertion to bypass the error
+                >
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        {...({} as any)} // Type assertion to bypass the error
                     />
                     {points.length > 0 && (
                         <CustomHeatmapLayer points={points} />
                     )}
                 </MapContainer>
+            </div>
+            <div className="regional-summary-container" style={{ marginTop: '20px' }}>
+                <h2>Regional Summaries</h2>
+                <div className="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Country</th>
+                                <th>Total Visitors</th>
+                                <th>Total Page Views</th>
+                                <th>Avg. Engagement</th>
+                                <th>Avg. Time on Page (s)</th>
+                                <th>Conversion Rate</th>
+                                <th>Bounce Rate</th>
+                                <th>Top Device</th>
+                                <th>Top OS</th>
+                                <th>Top Referrer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {summaries.map(summary => (
+                                <tr key={summary.country}>
+                                    <td>{summary.country}</td>
+                                    <td>{summary.totalVisitors}</td>
+                                    <td>{summary.totalPageViews}</td>
+                                    <td>{summary.avgEngagement}</td>
+                                    <td>{summary.avgTimeOnPage}</td>
+                                    <td>{summary.conversionRate}</td>
+                                    <td>{summary.bounceRate}</td>
+                                    <td>{summary.mostCommonDevice}</td>
+                                    <td>{summary.mostCommonOS}</td>
+                                    <td>{summary.topReferrer}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
