@@ -89,7 +89,7 @@ const Dashboard: React.FC = () => {
     const [maxAvgTimeSpent, setMaxAvgTimeSpent] = useState<string>('');
 
     const navigate = useNavigate();
-
+    console.log('API URL:', import.meta.env.VITE_API_URL);
     useEffect(() => {
         const fetchWeblogs = async () => {
             try {
