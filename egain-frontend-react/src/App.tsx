@@ -1,28 +1,67 @@
 import React from 'react';
-import './CSS/App.css'
-import Dashboard from './Pages/Dashboard'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './Pages/Dashboard';
+import LandingPage from './Pages/LandingPage';
 import RegionalReports from './Pages/RegionalReports';
 import ActivityStatistics from './Pages/ActivityStatistics';
 import OtherCategories from './Pages/OtherCategories';
-import Navbar from './Components/Navbar';
 import VisitorDetail from './Pages/VisitorDetail';
+import Navbar from './Components/Navbar';
+import './CSS/App.css';
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/regional-reports" element={<RegionalReports />} />
-          <Route path="/activity-statistics" element={<ActivityStatistics />} />
-          <Route path="/other-categories" element={<OtherCategories />} />
-          <Route path="/visitor-detail/:visitorId" element={<VisitorDetail />} />
-        </Routes>
-      </div>
-    </Router>
-  )
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route
+                    path="/dashboard"
+                    element={
+                        <>
+                            <Navbar />
+                            <Dashboard />
+                        </>
+                    }
+                />
+                <Route
+                    path="/regional-reports"
+                    element={
+                        <>
+                            <Navbar />
+                            <RegionalReports />
+                        </>
+                    }
+                />
+                <Route
+                    path="/activity-statistics"
+                    element={
+                        <>
+                            <Navbar />
+                            <ActivityStatistics />
+                        </>
+                    }
+                />
+                <Route
+                    path="/other-categories"
+                    element={
+                        <>
+                            <Navbar />
+                            <OtherCategories />
+                        </>
+                    }
+                />
+                <Route
+                    path="/visitor-detail/:visitorId"
+                    element={
+                        <>
+                            <Navbar />
+                            <VisitorDetail />
+                        </>
+                    }
+                />
+            </Routes>
+        </Router>
+    );
 }
 
-export default App
+export default App;

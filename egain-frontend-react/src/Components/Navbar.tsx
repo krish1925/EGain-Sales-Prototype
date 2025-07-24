@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
             </div>
             <ul className="navbar-nav">
                 <li className="nav-item">
-                    <Link to="/" className="nav-link">Dashboard</Link>
+                    <Link to="/dashboard" className="nav-link">Dashboard</Link>
                 </li>
                 <li className="nav-item">
                     <Link to="/regional-reports" className="nav-link">Regional Heatmaps</Link>
