@@ -54,7 +54,7 @@ class WeblogEntry(BaseModel):
 
 # In-memory storage for weblogs 
 # Load initial data from visitor_weblogs.json
-with open('../visitor_weblogs.json', 'r') as f:
+with open('./visitor_weblogs.json', 'r') as f:
     initial_data = json.load(f)
     weblogs_db = [WeblogEntry(**entry) for entry in initial_data['weblogs']]
 

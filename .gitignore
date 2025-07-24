@@ -1,0 +1,24 @@
+# Dependencies
+/node_modules
+/venv
+/env
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+/dist
+/build
+/out
+
+# Other
+.DS_Store
+*.pem
+*.cer 
