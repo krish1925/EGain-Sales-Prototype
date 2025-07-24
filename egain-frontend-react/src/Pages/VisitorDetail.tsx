@@ -59,7 +59,8 @@ const VisitorDetail: React.FC = () => {
     useEffect(() => {
         const fetchVisitorWeblogs = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/weblogs/');
+                const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+                const response = await axios.get(`${baseUrl}/weblogs/`);
                 const allWeblogs: WeblogEntry[] = response.data.weblogs;
                 const filteredLogs = allWeblogs.filter(log => log.visitor_id === visitorId);
                 setAllVisitorWeblogs(filteredLogs.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()));

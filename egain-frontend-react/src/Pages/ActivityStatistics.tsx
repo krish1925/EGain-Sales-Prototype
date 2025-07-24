@@ -55,7 +55,8 @@ const ActivityStatistics: React.FC = () => {
     useEffect(() => {
         const fetchWeblogs = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/weblogs/');
+                const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+                const response = await axios.get(`${baseUrl}/weblogs/`);
                 setWeblogs(response.data.weblogs);
             } catch (err) {
                 setError('Failed to fetch weblogs.');

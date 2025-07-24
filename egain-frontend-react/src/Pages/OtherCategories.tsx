@@ -55,10 +55,11 @@ const OtherCategories: React.FC = () => {
     useEffect(() => {
         const fetchWeblogs = async () => {
             try {
+                const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
                 // Pass selectedCountry to the backend API
                 const url = selectedCountry 
-                    ? `http://localhost:8000/weblogs/?country=${selectedCountry}` 
-                    : 'http://localhost:8000/weblogs/';
+                    ? `${baseUrl}/weblogs/?country=${selectedCountry}` 
+                    : `${baseUrl}/weblogs/`;
                 const response = await axios.get(url);
                 setWeblogs(response.data.weblogs);
                 const allCountries = Array.from(new Set(response.data.weblogs.map((log: WeblogEntry) => log.country))) as string[];
